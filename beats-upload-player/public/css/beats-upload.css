@@ -1,0 +1,304 @@
+/* =========================
+   UPLOAD FORM
+========================= */
+.beats-upload-form {
+  backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+  background-color: rgba(255, 255, 255, 0.4);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+  padding: 25px;
+  margin: 40px auto;
+  max-width: 500px;
+  color: #000;
+}
+
+.beats-upload-form input,
+.beats-upload-form select {
+  padding: 10px;
+  width: 100%;
+  border-radius: 8px;
+  border: none;
+  background: rgba(255, 255, 255, 0.8);
+  color: #000;
+  margin-bottom: 15px;
+}
+
+.beats-upload-form button {
+  background: #000;
+  color: #fff;
+  font-weight: 600;
+  border-radius: 10px;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.beats-upload-form button:hover {
+  transform: scale(1.05);
+}
+
+.beats-upload-login-required{
+  text-align: center;
+  font-size: 2rem;
+}
+
+/* =========================
+   NETFLIX-STYLE BEAT ROWS
+========================= */
+.hidden-section {
+  opacity: 0;
+  transform: translateY(30px);
+}
+.beats-section {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+
+.beats-row {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  padding-bottom: 20px;
+}
+.beats-row::-webkit-scrollbar { display: none; }
+
+/* --- Beat Card --- */
+.beat-card {
+  scroll-snap-align: start;
+  transition: transform 0.3s ease;
+}
+.beat-card:hover {
+  transform: scale(1.07);
+}
+
+/* --- Beat Thumbnail --- */
+.beat-thumb {
+  position: relative;
+  width: 230px;
+  height: 150px;
+  border-radius: 8px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.beat-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+.beat-thumb:hover img {
+  transform: scale(1.05);
+}
+
+/* --- Overlay on Hover --- */
+.beat-title-ribbon {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.85) 100%);
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 10px 14px;
+  pointer-events: none;
+}
+
+.beat-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.25) 0%, rgba(0, 0, 0, 0.85) 100%);
+  color: #fff;
+  opacity: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 18px;
+  padding: 18px 16px;
+  transition: opacity 0.3s ease;
+}
+.beat-thumb:hover .beat-overlay,
+.beat-overlay:focus-within,
+.beat-overlay.show-info,
+.beat-overlay.show-cart {
+  opacity: 1;
+}
+
+.beat-overlay-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.beat-overlay-actions button {
+  background: rgba(0, 0, 0, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  font-size: 1.1rem;
+  border-radius: 50%;
+  width: 42px;
+  height: 42px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease, background 0.2s ease, border 0.2s ease;
+}
+
+.beat-overlay-actions .beat-cart-btn {
+  font-size: 1.25rem;
+}
+
+.beat-overlay-actions button:hover,
+.beat-overlay-actions button:focus {
+  transform: scale(1.1);
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.25);
+  outline: none;
+}
+
+.beat-overlay-panel {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: center;
+}
+
+.beat-panel {
+  display: none;
+  flex-direction: column;
+  gap: 6px;
+  align-items: center;
+}
+
+.beat-overlay.show-info .beat-panel-info {
+  display: flex;
+}
+
+.beat-overlay.show-cart .beat-panel-cart {
+  display: flex;
+}
+
+.beat-panel-info .beat-producer {
+  font-size: 0.85rem;
+  color: #f3f4f6;
+  margin: 0;
+}
+
+
+.beat-panel-cart--empty .beat-price {
+  color: rgba(255, 255, 255, 0.6);
+}
+.beat-panel-cart .beat-price {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #e5e7eb;
+}
+
+.beat-panel-cart .beat-store-btn {
+  background: rgba(255, 255, 255, 0.25);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  padding: 6px 14px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-width: 110px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.beat-panel-cart .beat-store-btn:hover,
+.beat-panel-cart .beat-store-btn:focus {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(15, 23, 42, 0.25);
+  border-color: rgba(255, 255, 255, 0.55);
+  outline: none;
+}
+
+
+/* =========================
+   EMPTY STATE
+========================= */
+.no-beats {
+  font-size: 15px;
+  color: #555;
+  text-align: center;
+  padding: 30px;
+  border: 1px dashed #ccc;
+  border-radius: 8px;
+  background: #fafafa;
+}
+
+/* =========================
+   GLOBAL PLAYER (BOTTOM)
+========================= */
+.beats-global-player {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 90px;
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  z-index: 9999;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.beats-global-player .player-left {
+  display: flex;
+  align-items: center;
+}
+
+.beats-global-player img {
+  width: 60px;
+  height: 60px;
+  border-radius: 6px;
+  object-fit: cover;
+  margin-right: 10px;
+}
+
+.beats-global-player .player-info p {
+  margin: 0;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.beats-global-player .player-info small {
+  color: #3b3b3b;
+  font-size: 12px;
+}
+
+.beats-global-player audio {
+  width: 300px;
+}
+
+/* --- Mobile --- */
+@media (max-width: 600px) {
+  .beats-global-player {
+    flex-direction: column;
+    height: auto;
+    padding: 10px;
+    gap: 10px;
+  }
+  .beats-global-player audio {
+    width: 100%;
+  }
+}
