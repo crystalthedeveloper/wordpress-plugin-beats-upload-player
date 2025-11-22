@@ -1,0 +1,22 @@
+{
+  "$schema": "https://playground.wordpress.net/blueprint-schema.json",
+  "landingPage": "/beats-player-demo/",
+  "preferredVersions": {
+    "php": "8.2",
+    "wp": "6.5"
+  },
+  "steps": [
+    {
+      "step": "activatePlugin",
+      "plugin": "beats-upload-player/beats-upload-player.php"
+    },
+    {
+      "step": "runPHP",
+      "code": "<?php\n$upload_dir = wp_upload_dir();\n$base_dir = trailingslashit($upload_dir['basedir']) . 'beats/';\n$audio_dir = $base_dir . 'audio/';\n$img_dir = $base_dir . 'images/';\nwp_mkdir_p($audio_dir);\nwp_mkdir_p($img_dir);\n\n$plugin_dir = WP_PLUGIN_DIR . '/beats-upload-player';\n$demo_dir = $plugin_dir . '/resources/demo/';\n$demo_assets = [\n  'audio/demo.mp3' => 'demo.mp3',\n  'images/demo-1.jpg' => 'demo-1.jpg',\n  'images/demo-2.jpg' => 'demo-2.jpg',\n  'images/demo-3.jpg' => 'demo-3.jpg',\n  'images/demo-4.jpg' => 'demo-4.jpg',\n  'images/demo-5.jpg' => 'demo-5.jpg'\n];\nforeach ($demo_assets as $relative => $filename) {\n  $source = $demo_dir . basename($relative);\n  $target_dir = str_contains($relative, 'audio/') ? $audio_dir : $img_dir;\n  if (file_exists($source)) {\n    copy($source, $target_dir . basename($relative));\n  }\n}\n\n$beats = [\n  ['name' => 'Sunset Drive', 'producer' => 'Crystal The Developer', 'category' => 'Hip hop', 'image' => 'images/demo-1.jpg', 'price' => '19.99'],\n  ['name' => 'Neon Skies', 'producer' => 'Crystal The Developer', 'category' => 'Trap', 'image' => 'images/demo-2.jpg', 'price' => '24.00'],\n  ['name' => 'Golden Hour', 'producer' => 'Crystal The Developer', 'category' => 'Rnb', 'image' => 'images/demo-3.jpg', 'price' => '18.00'],\n  ['name' => 'Afterglow', 'producer' => 'Crystal The Developer', 'category' => 'Pop', 'image' => 'images/demo-4.jpg', 'price' => '21.50'],\n  ['name' => 'City Lights', 'producer' => 'Crystal The Developer', 'category' => 'Afro beat', 'image' => 'images/demo-5.jpg', 'price' => '22.00'],\n  ['name' => 'Night Drive', 'producer' => 'Crystal The Developer', 'category' => 'House', 'image' => 'images/demo-1.jpg', 'price' => '17.50']\n];\n$now = current_time('mysql');\nforeach ($beats as &$beat) {\n  $beat['file'] = 'audio/demo.mp3';\n  $beat['uploaded'] = $now;\n}\nunset($beat);\nfile_put_contents($base_dir . 'beats.json', json_encode($beats, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));\n"
+    },
+    {
+      "step": "runPHP",
+      "code": "<?php\n$content = '[beats_player_demo]';\n$demo_page = get_page_by_path('beats-player-demo');\nif ($demo_page instanceof WP_Post) {\n  $page_id = $demo_page->ID;\n  wp_update_post([\n    'ID' => $page_id,\n    'post_title' => 'Beats Upload Player Demo',\n    'post_status' => 'publish',\n    'post_content' => $content,\n  ]);\n} else {\n  $page_id = wp_insert_post([\n    'post_title' => 'Beats Upload Player Demo',\n    'post_name' => 'beats-player-demo',\n    'post_status' => 'publish',\n    'post_type' => 'page',\n    'post_content' => $content,\n  ]);\n}\nif (!is_wp_error($page_id)) {\n  update_option('show_on_front', 'page');\n  update_option('page_on_front', $page_id);\n}\n"
+    }
+  ]
+}

@@ -140,3 +140,29 @@ function beats_global_player_shortcode() {
   <?php return ob_get_clean();
 }
 add_shortcode('beats_global_player', 'beats_global_player_shortcode');
+
+/**
+ * Playground demo shim that renders the main player with a heading.
+ */
+function beats_player_demo_shortcode() {
+  wp_enqueue_style('beats-upload-style');
+  wp_enqueue_style('beats-category-search-style');
+  wp_enqueue_script('beats-loader');
+  wp_enqueue_script('beats-player');
+
+  $heading = '<h3 class="beats-player-demo__heading">' . esc_html__('Beats Upload Player Demo', 'beats-upload-player') . '</h3>';
+
+  $player_markup = '';
+  if (shortcode_exists('beats_upload_player')) {
+    $player_markup = do_shortcode('[beats_upload_player]');
+  }
+
+  if ($player_markup === '') {
+    $player_markup = do_shortcode('[beats_category_search]');
+    $player_markup .= do_shortcode('[beats_display_home]');
+    $player_markup .= do_shortcode('[beats_global_player]');
+  }
+
+  return '<div class="beats-player-demo">' . $heading . $player_markup . '</div>';
+}
+add_shortcode('beats_player_demo', 'beats_player_demo_shortcode');
